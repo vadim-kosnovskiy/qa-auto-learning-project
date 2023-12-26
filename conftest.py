@@ -15,8 +15,9 @@ class User:
         self.second_name = ""
 
 
-@pytest.fixture()
+@pytest.fixture
 def user():
     user = User()
-    yield user.create()
+    user.create()
+    yield user
     user.remove()
