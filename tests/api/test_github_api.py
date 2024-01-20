@@ -57,6 +57,6 @@ def test_count_branches(github_api):
 @pytest.mark.api
 def test_not_only_one_author_added_commits(github_api):
     commit_list = github_api.get_commit_list()
-    count_authors = set([c["commit"]["author"]["name"] for c in commit_list])
+    authors = set([c["commit"]["author"]["name"] for c in commit_list])
 
-    assert len(count_authors) != 1, "Оnly one author added commits"
+    assert len(authors) != 1, "Оnly one author added commits"
