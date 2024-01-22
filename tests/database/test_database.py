@@ -28,14 +28,15 @@ def test_check_user_sergii(database):
 @pytest.mark.database
 def test_product_qnt_update(database):
     database.update_product_qnt_by_id(1, 25)
-    [(quantity,)] = database.select_product_qnt_by_id(1)
+    [(id_, quantity,)] = database.select_product_qnt_by_id(1)
 
     assert quantity == 25, "Quantity is not equal 25"
 
 
+@pytest.mark.database
 def test_product_insert(database):
     database.insert_product(4, "печиво", "солодке", 30)
-    [(quantity,)] = database.select_product_qnt_by_id(4)
+    [(id_, quantity,)] = database.select_product_qnt_by_id(4)
 
     assert quantity == 30, "Quantity is not equal 30"
 
@@ -60,3 +61,19 @@ def test_detailed_orders(database):
     assert customers_name == "Sergii", "Customers name is not Sergii"
     assert products_name == "солодка вода", "Product name is not 'солодка вода'"
     assert description == "з цукром", "Description is not 'з цукром'"
+
+
+@pytest.mark.database
+def test_summary_product_qnt_by_name(database):
+    (sum_qnt,) = database.get_summary_product_qnt_by_name("молоко")
+
+    assert sum_qnt == 25
+
+
+@pytest.mark.database
+def test_product_max_count_and_its_sum(database):
+    (name, count_product, sum_qnt) = database.get_product_max_count_and_its_sum()
+
+    assert name == "солодка вода", "Name is not 'солодка вода'"
+    assert count_product == 3, "Count product is not 3"
+    assert sum_qnt == 43, "Sum is not 43"

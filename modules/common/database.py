@@ -39,23 +39,23 @@ class Database:
 
     def select_product_qnt_by_id(self, product_id):
         self.cursor.execute(
-            f"SELECT quantity "
+            f"SELECT id, quantity "
             f"FROM products "
             f"WHERE id = {product_id};")
 
         return self.cursor.fetchall()
 
-    def insert_product(self, id, name, descript, qnt):
+    def insert_product(self, id_, name, descript, qnt):
         self.cursor.execute(
             f"INSERT OR REPLACE INTO products(id, name, description, quantity) "
-            f"VALUES ({id}, '{name}', '{descript}', {qnt});"
+            f"VALUES ({id_}, '{name}', '{descript}', {qnt});"
         )
         self.connection.commit()
 
-    def delete_product_by_id(self, id):
+    def delete_product_by_id(self, id_):
         self.cursor.execute(
             f"DELETE FROM products "
-            f"WHERE id = {id};"
+            f"WHERE id = {id_};"
         )
         self.connection.commit()
 
@@ -69,3 +69,22 @@ class Database:
         )
 
         return self.cursor.fetchall()
+
+    def get_summary_product_qnt_by_name(self, prod_name):
+        self.cursor.execute(
+            f"SELECT SUM(quantity) "
+            f"FROM products "
+            f"WHERE '{prod_name}' LIKE name;"
+        )
+
+        return self.cursor.fetchone()
+
+    def get_product_max_count_and_its_sum(self):
+        self.cursor.execute(
+            f"SELECT t.name, MAX(count_name), t.sum_qnt "
+            f"FROM (SELECT name, COUNT(name) AS count_name, SUM(quantity) AS sum_qnt"
+            f"      FROM products "
+            f"      GROUP BY name) as t ;"
+        )
+
+        return self.cursor.fetchone()
