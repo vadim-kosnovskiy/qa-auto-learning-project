@@ -88,3 +88,10 @@ class Database:
         )
 
         return self.cursor.fetchone()
+
+    def insert_invalid_type_qnt(self, id_, name, descript, qnt):
+        self.cursor.execute(
+            f"INSERT OR REPLACE INTO products(id, name, description, quantity) "
+            f"VALUES ({id_}, '{name}', '{descript}', '{qnt}');"
+        )
+        self.connection.commit()

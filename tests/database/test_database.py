@@ -77,3 +77,12 @@ def test_product_max_count_and_its_sum(database):
     assert name == "солодка вода", "Name is not 'солодка вода'"
     assert count_product == 3, "Count product is not 3"
     assert sum_qnt == 43, "Sum is not 43"
+
+
+@pytest.mark.database
+def test_insert_invalid_type_qnt(database):
+    # database.insert_invalid_type_qnt(10, 'печиво', 'солодке', 'десять')     # assert False
+    database.insert_invalid_type_qnt(10, 'печиво', 'солодке', '10')       # assert True
+    [(id_, quantity,)] = database.select_product_qnt_by_id(10)
+
+    assert isinstance(quantity, int), "Invalid type quantity"
