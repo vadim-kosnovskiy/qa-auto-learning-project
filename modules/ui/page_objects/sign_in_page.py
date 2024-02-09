@@ -11,7 +11,7 @@ class SignInPage(BasePage):
     def go_to(self):
         self.driver.get(SignInPage.URL)
 
-    def try_login(self, username, password):
+    def try_login(self, username: str, password: str) -> None:
         login_elem = self.driver.find_element(By.ID, "login_field")
 
         login_elem.send_keys(username)
@@ -24,5 +24,5 @@ class SignInPage(BasePage):
 
         btn_elem.click()
 
-    def check_title(self, expected_title):
+    def check_title(self, expected_title: str) -> None:
         return self.driver.title == expected_title
